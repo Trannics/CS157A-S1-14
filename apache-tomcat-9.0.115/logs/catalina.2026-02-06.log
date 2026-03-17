@@ -1,0 +1,55 @@
+06-Feb-2026 14:05:51.713 INFO [Thread-1] org.apache.coyote.AbstractProtocol.pause Pausing ProtocolHandler ["http-nio-8080"]
+06-Feb-2026 14:05:51.722 INFO [Thread-1] org.apache.catalina.core.StandardService.stopInternal Stopping service [Catalina]
+06-Feb-2026 14:05:52.785 INFO [Thread-1] org.apache.coyote.AbstractProtocol.stop Stopping ProtocolHandler ["http-nio-8080"]
+06-Feb-2026 14:05:53.391 WARNING [Thread-1] org.apache.tomcat.util.net.Acceptor.stopMillis The acceptor thread [http-nio-8080-Acceptor] did not stop cleanly
+06-Feb-2026 14:05:53.400 INFO [Thread-1] org.apache.coyote.AbstractProtocol.destroy Destroying ProtocolHandler ["http-nio-8080"]
+06-Feb-2026 14:09:19.984 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version name:   Apache Tomcat/9.0.115
+06-Feb-2026 14:09:19.985 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server built:          Jan 21 2026 08:17:26 UTC
+06-Feb-2026 14:09:19.985 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version number: 9.0.115.0
+06-Feb-2026 14:09:19.985 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Name:               Mac OS X
+06-Feb-2026 14:09:19.985 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Version:            26.2
+06-Feb-2026 14:09:19.985 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Architecture:          aarch64
+06-Feb-2026 14:09:19.985 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Java Home:             /Library/Java/JavaVirtualMachines/jdk-25.jdk/Contents/Home
+06-Feb-2026 14:09:19.986 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Version:           25+37-LTS-3491
+06-Feb-2026 14:09:19.986 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Vendor:            Oracle Corporation
+06-Feb-2026 14:09:19.986 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:         /Users/erictran/Downloads/apache-tomcat-9.0.115
+06-Feb-2026 14:09:19.986 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:         /Users/erictran/Downloads/apache-tomcat-9.0.115
+06-Feb-2026 14:09:19.998 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.lang=ALL-UNNAMED
+06-Feb-2026 14:09:19.998 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.lang.invoke=ALL-UNNAMED
+06-Feb-2026 14:09:19.998 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.lang.reflect=ALL-UNNAMED
+06-Feb-2026 14:09:19.998 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.io=ALL-UNNAMED
+06-Feb-2026 14:09:19.998 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.util=ALL-UNNAMED
+06-Feb-2026 14:09:19.998 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.util.concurrent=ALL-UNNAMED
+06-Feb-2026 14:09:19.998 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED
+06-Feb-2026 14:09:19.998 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.config.file=/Users/erictran/Downloads/apache-tomcat-9.0.115/conf/logging.properties
+06-Feb-2026 14:09:19.998 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+06-Feb-2026 14:09:19.998 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djdk.tls.ephemeralDHKeySize=2048
+06-Feb-2026 14:09:19.998 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.protocol.handler.pkgs=org.apache.catalina.webresources
+06-Feb-2026 14:09:19.998 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dsun.io.useCanonCaches=false
+06-Feb-2026 14:09:19.998 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dorg.apache.catalina.security.SecurityListener.UMASK=0027
+06-Feb-2026 14:09:19.998 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dignore.endorsed.dirs=
+06-Feb-2026 14:09:19.998 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.base=/Users/erictran/Downloads/apache-tomcat-9.0.115
+06-Feb-2026 14:09:19.998 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.home=/Users/erictran/Downloads/apache-tomcat-9.0.115
+06-Feb-2026 14:09:19.999 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.io.tmpdir=/Users/erictran/Downloads/apache-tomcat-9.0.115/temp
+06-Feb-2026 14:09:20.004 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent The Apache Tomcat Native library which allows using OpenSSL was not found on the java.library.path: [/Users/erictran/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:.]
+06-Feb-2026 14:09:20.138 INFO [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8080"]
+06-Feb-2026 14:09:20.155 INFO [main] org.apache.catalina.startup.Catalina.load Server initialization in [255] milliseconds
+06-Feb-2026 14:09:20.170 INFO [main] org.apache.catalina.core.StandardService.startInternal Starting service [Catalina]
+06-Feb-2026 14:09:20.170 INFO [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet engine: [Apache Tomcat/9.0.115]
+06-Feb-2026 14:09:20.173 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/Users/erictran/Downloads/apache-tomcat-9.0.115/webapps/docs]
+06-Feb-2026 14:09:20.366 INFO [main] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+06-Feb-2026 14:09:20.382 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/Users/erictran/Downloads/apache-tomcat-9.0.115/webapps/docs] has finished in [207] ms
+06-Feb-2026 14:09:20.382 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/Users/erictran/Downloads/apache-tomcat-9.0.115/webapps/manager]
+06-Feb-2026 14:09:20.455 INFO [main] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+06-Feb-2026 14:09:20.458 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/Users/erictran/Downloads/apache-tomcat-9.0.115/webapps/manager] has finished in [76] ms
+06-Feb-2026 14:09:20.458 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/Users/erictran/Downloads/apache-tomcat-9.0.115/webapps/examples]
+06-Feb-2026 14:09:20.592 INFO [main] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+06-Feb-2026 14:09:20.598 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/Users/erictran/Downloads/apache-tomcat-9.0.115/webapps/examples] has finished in [140] ms
+06-Feb-2026 14:09:20.598 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/Users/erictran/Downloads/apache-tomcat-9.0.115/webapps/ROOT]
+06-Feb-2026 14:09:20.665 INFO [main] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+06-Feb-2026 14:09:20.665 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/Users/erictran/Downloads/apache-tomcat-9.0.115/webapps/ROOT] has finished in [67] ms
+06-Feb-2026 14:09:20.665 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/Users/erictran/Downloads/apache-tomcat-9.0.115/webapps/host-manager]
+06-Feb-2026 14:09:20.730 INFO [main] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+06-Feb-2026 14:09:20.732 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/Users/erictran/Downloads/apache-tomcat-9.0.115/webapps/host-manager] has finished in [67] ms
+06-Feb-2026 14:09:20.733 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8080"]
+06-Feb-2026 14:09:20.738 INFO [main] org.apache.catalina.startup.Catalina.start Server startup in [582] milliseconds
