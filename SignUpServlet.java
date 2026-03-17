@@ -19,7 +19,7 @@ public class SignUpServlet extends HttpServlet {
             Connection con = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/Task-ME",
                 "root",
-                "Tex@adam605"
+                "HeyTea9812!"
             );
 
             PreparedStatement ps = con.prepareStatement(

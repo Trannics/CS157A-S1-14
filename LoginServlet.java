@@ -17,7 +17,7 @@ public class LoginServlet extends HttpServlet {
             Connection con = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/Task-ME",
                 "root",
-                "Tex@adam605"
+                "HeyTea9812!"
             );
 
             PreparedStatement ps = con.prepareStatement(
@@ -30,7 +30,7 @@ public class LoginServlet extends HttpServlet {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                response.sendRedirect("dashboard.html");
+                response.sendRedirect("Dashboard-Page.html");
             } else {
                 response.getWriter().println("Invalid email or password.");
             }
