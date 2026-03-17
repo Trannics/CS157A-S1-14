@@ -6,6 +6,14 @@ TaskME is a task management and collaboration platform that helps individuals an
 - Indpaul Johl — indpaul.johl@sjsu.edu
 - Tehkhum Sultanali — tehkhumhusein.sultanali@sjsu.edu
 
+## File Location
+All of our code is stored in /apache-tomcat-9.0.115/webapps/TaskME. Some files are also found within /WEB-INF.
+
+## How to Run
+1. Run "./startup.sh" after cd-ing into the /apache-tomcat-9.0.115/bin directory. 
+2. Then paste the following link into the
+browser: http://localhost:8080/TaskME/Home-Page.html
+
 ## Tech Stack
 - **Frontend:** HTML5, CSS, JavaScript
 - **Backend:** Java, JSP
