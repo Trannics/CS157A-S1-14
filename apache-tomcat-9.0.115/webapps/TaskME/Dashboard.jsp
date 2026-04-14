@@ -68,6 +68,7 @@
     <div class="logo">Task<span>ME</span></div>
     <div class="toplinks">
       <a href="dashboard">Home</a>
+      <a href="account">Account</a>
       <a href="logout">Logout</a>
     </div>
   </nav>
