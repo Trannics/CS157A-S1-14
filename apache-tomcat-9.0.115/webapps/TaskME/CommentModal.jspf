@@ -1,0 +1,100 @@
+<%-- CommentModal.jspf
+     Expects from caller:
+       int              tId         – Task_ID
+       String           row[1]      – Task_Title  (Object[] row still in scope)
+       List<Object[]>   tComments   – comments for this task
+       int              projectId
+       int              currentUserId
+       boolean          isAdmin
+       SimpleDateFormat fmt
+--%>
+<div id="modal-<%= tId %>" class="modal-overlay"
+     onclick="if(event.target===this)closeModal(<%= tId %>)">
+  <div class="modal-card">
+
+    <%-- Header --%>
+    <div class="modal-header">
+      <div>
+        <div class="modal-header-title"><%= row[1] %></div>
+        <div class="modal-header-sub"><%= tComments.size() %> comment<%= tComments.size() == 1 ? "" : "s" %></div>
+      </div>
+      <button class="modal-close" onclick="closeModal(<%= tId %>)">&times;</button>
+    </div>
+
+    <%-- Comment list --%>
+    <div class="modal-body">
+      <% if (tComments.isEmpty()) { %>
+        <div class="no-comments">No comments yet. Be the first!</div>
+      <% } %>
+      <% for (Object[] c : tComments) {
+           int    cId        = (Integer)            c[0];
+           int    cOwner     = (Integer)            c[1];
+           String cFirst     = (String)             c[2];
+           String cLast      = (String)             c[3];
+           String cRaw       = (String)             c[4];
+           java.sql.Timestamp cTime = (java.sql.Timestamp) c[5];
+           // HTML-escape comment text for safe display and textarea pre-fill
+           String cSafe = cRaw == null ? "" :
+               cRaw.replace("&","&amp;").replace("<","&lt;").replace(">","&gt;").replace("\"","&quot;");
+           boolean canEditC   = (cOwner == currentUserId);
+           boolean canDeleteC = isAdmin || (cOwner == currentUserId);
+      %>
+      <div class="comment-item">
+        <div class="comment-meta">
+          <strong><%= cFirst %> <%= cLast %></strong>
+          &nbsp;&middot;&nbsp;<%= fmt.format(cTime) %>
+        </div>
+
+        <%-- Display text --%>
+        <div id="ctext-<%= cId %>" class="comment-text"><%= cSafe %></div>
+
+        <%-- Inline edit form (hidden until "Edit" clicked) --%>
+        <% if (canEditC) { %>
+        <div id="cedit-<%= cId %>" class="comment-edit-form">
+          <form method="post" action="comment">
+            <input type="hidden" name="action"     value="edit" />
+            <input type="hidden" name="commentId"  value="<%= cId %>" />
+            <input type="hidden" name="taskId"     value="<%= tId %>" />
+            <input type="hidden" name="projectId"  value="<%= projectId %>" />
+            <textarea name="commentText"><%= cSafe %></textarea>
+            <div class="edit-form-actions">
+              <button class="btn-ca edit" type="submit" style="font-family:inherit;">Save</button>
+              <button class="btn-ca"      type="button" onclick="cancelEdit(<%= cId %>)" style="font-family:inherit;">Cancel</button>
+            </div>
+          </form>
+        </div>
+        <% } %>
+
+        <%-- Edit / Delete action row --%>
+        <div id="cact-<%= cId %>" class="comment-actions">
+          <% if (canEditC) { %>
+            <button class="btn-ca edit" onclick="startEdit(<%= cId %>)">Edit</button>
+          <% } %>
+          <% if (canDeleteC) { %>
+            <form method="post" action="comment"
+                  onsubmit="return confirm('Delete this comment?');" style="margin:0;">
+              <input type="hidden" name="action"    value="delete" />
+              <input type="hidden" name="commentId" value="<%= cId %>" />
+              <input type="hidden" name="taskId"    value="<%= tId %>" />
+              <input type="hidden" name="projectId" value="<%= projectId %>" />
+              <button class="btn-ca delete" type="submit" style="font-family:inherit;">Delete</button>
+            </form>
+          <% } %>
+        </div>
+      </div>
+      <% } %>
+    </div>
+
+    <%-- Add comment form --%>
+    <div class="modal-footer">
+      <form method="post" action="comment" class="add-comment-form">
+        <input type="hidden" name="action"    value="add" />
+        <input type="hidden" name="taskId"    value="<%= tId %>" />
+        <input type="hidden" name="projectId" value="<%= projectId %>" />
+        <textarea name="commentText" placeholder="Write a comment..."></textarea>
+        <button class="btn-add-comment" type="submit">Add Comment</button>
+      </form>
+    </div>
+
+  </div>
+</div>

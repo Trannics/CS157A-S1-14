@@ -86,7 +86,7 @@ public class ProjectServlet extends HttpServlet {
                 // Tasks for this project (priority sorting)
                 List<Object[]> tasks = new ArrayList<>();
                 try (PreparedStatement ps = con.prepareStatement(
-                    "SELECT Task_ID, Task_Title, Task_Description, Due_Date, Status, Priority " +
+                    "SELECT Task_ID, Task_Title, Task_Description, Due_Date, Status, Priority, Created_By " +
                     "FROM tasks " +
                     "WHERE Project_ID=? " +
                     "ORDER BY Priority DESC, Due_Date ASC, Task_ID ASC"
@@ -100,20 +100,85 @@ public class ProjectServlet extends HttpServlet {
                                 rs.getString("Task_Description"),
                                 rs.getTimestamp("Due_Date"),
                                 rs.getString("Status"),
-                                rs.getInt("Priority")
+                                rs.getInt("Priority"),
+                                rs.getObject("Created_By")
                             });
                         }
                     }
                 }
 
+                // Project members ordered by role priority then name
+                List<Object[]> members = new ArrayList<>();
+                try (PreparedStatement ps = con.prepareStatement(
+                    "SELECT u.User_ID, u.First_Name, u.Last_Name, u.Email, pm.Role " +
+                    "FROM project_memberships pm " +
+                    "JOIN users u ON u.User_ID = pm.User_ID " +
+                    "WHERE pm.Project_ID=? " +
+                    "ORDER BY FIELD(pm.Role,'ADMIN','MEMBER','COMMENT_ONLY'), u.First_Name ASC"
+                )) {
+                    ps.setInt(1, projectId);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        while (rs.next()) {
+                            members.add(new Object[] {
+                                rs.getInt("User_ID"),
+                                rs.getString("First_Name"),
+                                rs.getString("Last_Name"),
+                                rs.getString("Email"),
+                                rs.getString("Role")
+                            });
+                        }
+                    }
+                }
+                request.setAttribute("members", members);
+
+                // Comments for all tasks in this project, grouped by Task_ID
+                java.util.Map<Integer, List<Object[]>> commentMap = new java.util.HashMap<>();
+                try (PreparedStatement ps = con.prepareStatement(
+                    "SELECT c.Comment_ID, c.Task_ID, c.User_ID, u.First_Name, u.Last_Name, " +
+                    "       c.Comment_Text, c.Created_At " +
+                    "FROM comments c " +
+                    "JOIN users u ON u.User_ID = c.User_ID " +
+                    "JOIN tasks t ON t.Task_ID = c.Task_ID " +
+                    "WHERE t.Project_ID=? " +
+                    "ORDER BY c.Task_ID, c.Created_At ASC"
+                )) {
+                    ps.setInt(1, projectId);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        while (rs.next()) {
+                            int tid = rs.getInt("Task_ID");
+                            commentMap.computeIfAbsent(tid, k -> new ArrayList<>()).add(new Object[] {
+                                rs.getInt("Comment_ID"),
+                                rs.getInt("User_ID"),
+                                rs.getString("First_Name"),
+                                rs.getString("Last_Name"),
+                                rs.getString("Comment_Text"),
+                                rs.getTimestamp("Created_At")
+                            });
+                        }
+                    }
+                }
+                request.setAttribute("commentMap", commentMap);
+
+                // Auto-open a comment modal if redirected from CommentServlet
+                String commentTask = request.getParameter("commentTask");
+                if (commentTask != null) request.setAttribute("commentTaskId", commentTask);
+
+                // Pass current user id so JSP can determine task ownership
+                request.setAttribute("currentUserId", userId);
+
                 // Pass data to JSP
-                request.setAttribute("projectId", projectId);
-                request.setAttribute("projectName", projectName);
-                request.setAttribute("description", description);
-                request.setAttribute("dueDate", dueDate);
-                request.setAttribute("createdAt", createdAt);
-                request.setAttribute("role", role);
-                request.setAttribute("tasks", tasks);
+                request.setAttribute("projectId",    projectId);
+                request.setAttribute("projectName",  projectName);
+                request.setAttribute("description",  description);
+                request.setAttribute("dueDate",      dueDate);
+                request.setAttribute("createdAt",    createdAt);
+                request.setAttribute("role",         role);
+                request.setAttribute("tasks",        tasks);
+
+                // Invite form feedback
+                request.setAttribute("inviteError", request.getParameter("inviteError"));
+                request.setAttribute("inviteEmail", request.getParameter("inviteEmail"));
+                request.setAttribute("inviteRole",  request.getParameter("inviteRole"));
 
                 request.getRequestDispatcher("Project.jsp").forward(request, response);
             }

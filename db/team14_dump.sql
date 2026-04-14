@@ -270,9 +270,12 @@ CREATE TABLE `tasks` (
   `Created_At` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Status` enum('TODO','IN_PROGRESS','DONE') NOT NULL DEFAULT 'TODO',
   `Priority` tinyint NOT NULL DEFAULT '2',
+  `Created_By` int DEFAULT NULL,
   PRIMARY KEY (`Task_ID`),
   KEY `Project_ID` (`Project_ID`),
-  CONSTRAINT `tasks_ibfk_1` FOREIGN KEY (`Project_ID`) REFERENCES `projects` (`Project_ID`) ON DELETE CASCADE
+  KEY `Created_By` (`Created_By`),
+  CONSTRAINT `tasks_ibfk_1` FOREIGN KEY (`Project_ID`) REFERENCES `projects` (`Project_ID`) ON DELETE CASCADE,
+  CONSTRAINT `tasks_ibfk_2` FOREIGN KEY (`Created_By`) REFERENCES `users` (`User_ID`) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

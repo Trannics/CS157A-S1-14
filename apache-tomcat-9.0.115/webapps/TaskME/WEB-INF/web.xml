@@ -79,4 +79,64 @@
   <url-pattern>/invite-user</url-pattern>
 </servlet-mapping>
 
+<servlet>
+  <servlet-name>editTask</servlet-name>
+  <servlet-class>EditTaskServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+  <servlet-name>editTask</servlet-name>
+  <url-pattern>/edit-task</url-pattern>
+</servlet-mapping>
+
+<servlet>
+  <servlet-name>deleteTask</servlet-name>
+  <servlet-class>DeleteTaskServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+  <servlet-name>deleteTask</servlet-name>
+  <url-pattern>/delete-task</url-pattern>
+</servlet-mapping>
+
+<servlet>
+  <servlet-name>editProject</servlet-name>
+  <servlet-class>EditProjectServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+  <servlet-name>editProject</servlet-name>
+  <url-pattern>/edit-project</url-pattern>
+</servlet-mapping>
+
+<servlet>
+  <servlet-name>deleteProject</servlet-name>
+  <servlet-class>DeleteProjectServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+  <servlet-name>deleteProject</servlet-name>
+  <url-pattern>/delete-project</url-pattern>
+</servlet-mapping>
+
+<servlet>
+  <servlet-name>removeMember</servlet-name>
+  <servlet-class>RemoveMemberServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+  <servlet-name>removeMember</servlet-name>
+  <url-pattern>/remove-member</url-pattern>
+</servlet-mapping>
+
+<servlet>
+  <servlet-name>comment</servlet-name>
+  <servlet-class>CommentServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+  <servlet-name>comment</servlet-name>
+  <url-pattern>/comment</url-pattern>
+</servlet-mapping>
+
 </web-app>

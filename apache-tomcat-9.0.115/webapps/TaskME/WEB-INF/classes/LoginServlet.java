@@ -1,4 +1,5 @@
 import java.io.*;
+import java.net.URLEncoder;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.sql.*;
@@ -41,7 +42,8 @@ public class LoginServlet extends HttpServlet {
 
                     response.sendRedirect("dashboard");
                 } else {
-                    response.getWriter().println("Invalid email or password.");
+                    response.sendRedirect("Log-In-Page.html?error=1&email="
+                        + URLEncoder.encode(email == null ? "" : email, "UTF-8"));
                 }
 
                 rs.close();

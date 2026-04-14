@@ -165,8 +165,8 @@ public class CreateTaskServlet extends HttpServlet {
 
                 // Insert task
                 try (PreparedStatement ps = con.prepareStatement(
-                    "INSERT INTO tasks (Project_ID, Task_Title, Task_Description, Due_Date, Status, Priority) " +
-                    "VALUES (?, ?, ?, ?, ?, ?)"
+                    "INSERT INTO tasks (Project_ID, Task_Title, Task_Description, Due_Date, Status, Priority, Created_By) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?)"
                 )) {
                     ps.setInt(1, projectId);
                     ps.setString(2, title.trim());
@@ -175,6 +175,7 @@ public class CreateTaskServlet extends HttpServlet {
                     else ps.setTimestamp(4, dueTs);
                     ps.setString(5, status);
                     ps.setInt(6, priority);
+                    ps.setInt(7, userId);
 
                     ps.executeUpdate();
                 }

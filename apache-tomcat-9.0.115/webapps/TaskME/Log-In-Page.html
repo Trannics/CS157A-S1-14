@@ -77,12 +77,33 @@
       </div>
     
       <button class="btn-submit" type="submit">Log In</button>
-    
+
+      <div id="server-error" style="display:none; color:#ef4444; font-size:0.82rem; margin-top:12px; text-align:center;">
+        Incorrect email or password. Please try again.
+      </div>
     </form>
   </div>
 </div>
 
 <script>
+  (function () {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('error') === '1') {
+      document.getElementById('server-error').style.display = 'block';
+      const emailInput = document.getElementById('email');
+      const savedEmail = params.get('email');
+      if (savedEmail) emailInput.value = savedEmail;
+      emailInput.style.borderColor = '#ef4444';
+    }
+  })();
+
+  document.getElementById('email').addEventListener('input', clearServerError);
+  document.getElementById('password').addEventListener('input', clearServerError);
+  function clearServerError() {
+    document.getElementById('server-error').style.display = 'none';
+    document.getElementById('email').style.borderColor = '';
+  }
+
   function validate() {
     const email = document.getElementById('email');
     const password = document.getElementById('password');

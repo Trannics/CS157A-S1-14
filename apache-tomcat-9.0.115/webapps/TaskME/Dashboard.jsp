@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="java.util.*" %>
+<%@ page import="java.util.*, java.text.SimpleDateFormat" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -94,6 +94,7 @@
       <%
         // DashboardServlet sends: List<Object[]>
         // row = [0]=Project_ID, [1]=Project_Name, [2]=Due_Date, [3]=Role
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
         List<?> projects = (List<?>) request.getAttribute("projects");
 
         if (projects == null || projects.isEmpty()) {
@@ -107,7 +108,7 @@
         <div class="project">
           <div class="project-title"><%= row[1] %></div>
           <div class="meta">Role: <%= row[3] %></div>
-          <div class="meta">Due: <%= (row[2] == null ? "N/A" : row[2].toString()) %></div>
+          <div class="meta">Due: <%= (row[2] == null ? "N/A" : fmt.format(row[2])) %></div>
           <a class="link" href="project?id=<%= row[0] %>">Open Project -></a>
         </div>
       <%
