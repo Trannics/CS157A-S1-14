@@ -1,0 +1,10 @@
+# Tomcat generated files
+apache-tomcat-9.0.115/logs/
+apache-tomcat-9.0.115/work/
+apache-tomcat-9.0.115/temp/
+
+# Compiled Java bytecode
+*.class
+
+# IDE
+.idea/

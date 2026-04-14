@@ -19,4 +19,64 @@
   <url-pattern>/login</url-pattern>
 </servlet-mapping>
 
+  <servlet>
+    <servlet-name>dashboard</servlet-name>
+    <servlet-class>DashboardServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>dashboard</servlet-name>
+    <url-pattern>/dashboard</url-pattern>
+  </servlet-mapping>
+
+<servlet>
+  <servlet-name>project</servlet-name>
+  <servlet-class>ProjectServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+  <servlet-name>project</servlet-name>
+  <url-pattern>/project</url-pattern>
+</servlet-mapping>
+
+<servlet>
+  <servlet-name>createTask</servlet-name>
+  <servlet-class>CreateTaskServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+  <servlet-name>createTask</servlet-name>
+  <url-pattern>/create-task</url-pattern>
+</servlet-mapping>
+
+<servlet>
+  <servlet-name>logout</servlet-name>
+  <servlet-class>LogoutServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+  <servlet-name>logout</servlet-name>
+  <url-pattern>/logout</url-pattern>
+</servlet-mapping>
+
+<servlet>
+  <servlet-name>createProject</servlet-name>
+  <servlet-class>CreateProjectServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+  <servlet-name>createProject</servlet-name>
+  <url-pattern>/create-project</url-pattern>
+</servlet-mapping>
+
+<servlet>
+  <servlet-name>inviteUser</servlet-name>
+  <servlet-class>InviteUserServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+  <servlet-name>inviteUser</servlet-name>
+  <url-pattern>/invite-user</url-pattern>
+</servlet-mapping>
+
 </web-app>
