@@ -518,6 +518,10 @@
         <% if (canCreateTask) { %>
           <a class="btn" href="create-task?projectId=<%= projectId %>">Create Task</a>
         <% } %>
+        
+        <a class="btn secondary" href="activity-log?projectId=<%= projectId %>" style="margin-top:10px;">
+          View Activity Log
+        </a>
 
         <%-- Admin-only project controls --%>
         <% if (isAdmin) {

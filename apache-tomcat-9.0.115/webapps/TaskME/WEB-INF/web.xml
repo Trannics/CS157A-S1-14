@@ -149,4 +149,14 @@
   <url-pattern>/account</url-pattern>
 </servlet-mapping>
 
+<servlet>
+    <servlet-name>ActivityLogServlet</servlet-name>
+    <servlet-class>ActivityLogServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>ActivityLogServlet</servlet-name>
+    <url-pattern>/activity-log</url-pattern>
+</servlet-mapping>
+
 </web-app>
