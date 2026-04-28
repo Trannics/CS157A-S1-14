@@ -102,7 +102,7 @@
         <span class="hint"> (Role: <%= role %>)</span>
       </div>
 
-      <form method="post" action="edit-task">
+      <form method="post" action="edit-task" enctype="multipart/form-data">
         <input type="hidden" name="taskId"    value="<%= taskId %>" />
         <input type="hidden" name="projectId" value="<%= projectId %>" />
 
@@ -179,6 +179,11 @@
             %>
         
           </select>
+        </div>
+
+        <div>
+          <label>Attachment</label>
+          <input type="file" name="attachment">
         </div>
 
         <div class="actions">

@@ -469,6 +469,45 @@
                     
                           java.sql.ResultSet labelRs = labelStmt.executeQuery();
                     %>
+
+                    <%
+                    try {
+                        Class.forName("com.mysql.cj.jdbc.Driver");
+                
+                        java.sql.Connection attConn = java.sql.DriverManager.getConnection(
+                            "jdbc:mysql://localhost:3306/team14",
+                            "taskme_app",
+                            "taskme123"
+                        );
+                
+                        java.sql.PreparedStatement attStmt = attConn.prepareStatement(
+                            "SELECT file_name, file_path FROM attachments WHERE task_id = ?"
+                        );
+                
+                        attStmt.setInt(1, tId);
+                        java.sql.ResultSet attRs = attStmt.executeQuery();
+                %>
+                
+                <div style="margin-top:6px; display:flex; flex-direction:column; gap:4px;">
+                        <% while (attRs.next()) { %>
+                            <div style="font-size:0.8rem;">
+                                📎 
+                                <a href="<%= attRs.getString("file_path") %>" target="_blank">
+                                    <%= attRs.getString("file_name") %>
+                                </a>
+                            </div>
+                        <% } %>
+                    </div>
+                
+                <%
+                        attRs.close();
+                        attStmt.close();
+                        attConn.close();
+                
+                    } catch (Exception e) {
+                        out.println("Attachment error: " + e.getMessage());
+                    }
+                %>
                     
                     <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap;">
                       <% while (labelRs.next()) { %>
@@ -558,6 +597,45 @@
                     
                           java.sql.ResultSet labelRs = labelStmt.executeQuery();
                     %>
+
+                    <%
+                    try {
+                      Class.forName("com.mysql.cj.jdbc.Driver");
+              
+                      java.sql.Connection attConn = java.sql.DriverManager.getConnection(
+                          "jdbc:mysql://localhost:3306/team14",
+                          "taskme_app",
+                          "taskme123"
+                      );
+              
+                      java.sql.PreparedStatement attStmt = attConn.prepareStatement(
+                          "SELECT file_name, file_path FROM attachments WHERE task_id = ?"
+                      );
+              
+                      attStmt.setInt(1, tId);
+                      java.sql.ResultSet attRs = attStmt.executeQuery();
+                    %>
+
+                    <div style="margin-top:6px; display:flex; flex-direction:column; gap:4px;">
+                      <% while (attRs.next()) { %>
+                          <div style="font-size:0.8rem;">
+                              📎 
+                              <a href="<%= attRs.getString("file_path") %>" target="_blank">
+                                  <%= attRs.getString("file_name") %>
+                              </a>
+                          </div>
+                      <% } %>
+                  </div>
+
+                  <%
+                 attRs.close();
+                attStmt.close();
+                attConn.close();
+
+              } catch (Exception e) {
+                out.println("Attachment error: " + e.getMessage());
+              }
+              %>
                     
                     <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap;">
                       <% while (labelRs.next()) { %>
@@ -646,6 +724,46 @@
                     
                           java.sql.ResultSet labelRs = labelStmt.executeQuery();
                     %>
+
+                    <%
+                  try {
+                    Class.forName("com.mysql.cj.jdbc.Driver");
+
+                    java.sql.Connection attConn = java.sql.DriverManager.getConnection(
+                      "jdbc:mysql://localhost:3306/team14",
+                      "taskme_app",
+                      "taskme123"
+                      );
+
+                  java.sql.PreparedStatement attStmt = attConn.prepareStatement(
+                    "SELECT file_name, file_path FROM attachments WHERE task_id = ?"
+                   );
+
+                  attStmt.setInt(1, tId);
+                  java.sql.ResultSet attRs = attStmt.executeQuery();
+                  %>
+
+                  <div style="margin-top:6px; display:flex; flex-direction:column; gap:4px;">
+                    <% while (attRs.next()) { %>
+                        <div style="font-size:0.8rem;">
+                            📎 
+                            <a href="<%= attRs.getString("file_path") %>" target="_blank">
+                                <%= attRs.getString("file_name") %>
+                            </a>
+                        </div>
+                    <% } %>
+                </div>
+                
+                <%
+                  attRs.close();
+                  attStmt.close();
+                  attConn.close();
+
+                } catch (Exception e) {
+                out.println("Attachment error: " + e.getMessage());
+               }
+              %>
+
                     
                     <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap;">
                       <% while (labelRs.next()) { %>

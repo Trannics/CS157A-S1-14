@@ -2,7 +2,10 @@ import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.sql.*;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.http.Part;
 
+@MultipartConfig
 public class EditTaskServlet extends HttpServlet {
 
     private static final String DB_URL  = "jdbc:mysql://localhost:3306/team14";
@@ -207,6 +210,30 @@ public class EditTaskServlet extends HttpServlet {
                     ps.setInt(6, taskId);
                     ps.setInt(7, projectId);
                     ps.executeUpdate();
+                }
+
+                // ===== ATTACHMENT UPLOAD =====
+                Part filePart = request.getPart("attachment");
+
+                if (filePart != null && filePart.getSize() > 0) {
+
+                    String fileName = filePart.getSubmittedFileName();
+
+                    String uploadPath = getServletContext().getRealPath("") + "uploads/";
+                    File uploadDir = new File(uploadPath);
+                    if (!uploadDir.exists()) uploadDir.mkdir();
+
+                    String filePath = uploadPath + fileName;
+                    filePart.write(filePath);
+
+                    try (PreparedStatement psAttach = con.prepareStatement(
+                        "INSERT INTO attachments (task_id, file_name, file_path) VALUES (?, ?, ?)"
+                    )) {
+                        psAttach.setInt(1, taskId);
+                        psAttach.setString(2, fileName);
+                        psAttach.setString(3, "uploads/" + fileName);
+                        psAttach.executeUpdate();
+                    }
                 }
                 
                 try (PreparedStatement deleteOld = con.prepareStatement(
