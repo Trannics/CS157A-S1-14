@@ -159,4 +159,24 @@
     <url-pattern>/activity-log</url-pattern>
 </servlet-mapping>
 
+<servlet>
+    <servlet-name>CreateLabelServlet</servlet-name>
+    <servlet-class>CreateLabelServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>CreateLabelServlet</servlet-name>
+    <url-pattern>/CreateLabelServlet</url-pattern>
+</servlet-mapping>
+
+<servlet>
+    <servlet-name>AssignLabelServlet</servlet-name>
+    <servlet-class>AssignLabelServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>AssignLabelServlet</servlet-name>
+    <url-pattern>/AssignLabelServlet</url-pattern>
+</servlet-mapping>
+
 </web-app>

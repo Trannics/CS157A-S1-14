@@ -166,7 +166,8 @@ public class CreateTaskServlet extends HttpServlet {
                 // Insert task
                 try (PreparedStatement ps = con.prepareStatement(
                     "INSERT INTO tasks (Project_ID, Task_Title, Task_Description, Due_Date, Status, Priority, Created_By) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?)"
+                    "VALUES (?, ?, ?, ?, ?, ?, ?)",
+                    Statement.RETURN_GENERATED_KEYS
                 )) {
                     ps.setInt(1, projectId);
                     ps.setString(2, title.trim());
@@ -178,6 +179,24 @@ public class CreateTaskServlet extends HttpServlet {
                     ps.setInt(7, userId);
 
                     ps.executeUpdate();
+                    ResultSet rs = ps.getGeneratedKeys();
+                    int taskId = -1;
+                    if (rs.next()) {
+                        taskId = rs.getInt(1);
+                    }
+                    rs.close();
+                    PreparedStatement logPs = con.prepareStatement(
+                        "INSERT INTO activity_log (Project_ID, User_ID, Action_Type, Entity_Type, Entity_ID) VALUES (?, ?, ?, ?, ?)"
+                    );
+                    
+                    logPs.setInt(1, projectId);
+                    logPs.setInt(2, userId);
+                    logPs.setString(3, "CREATE");
+                    logPs.setString(4, "Task");
+                    logPs.setInt(5, taskId);
+                    
+                    logPs.executeUpdate();
+                    logPs.close();
                 }
 
                 // Back to project page

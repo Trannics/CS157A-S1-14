@@ -139,6 +139,7 @@ public class EditTaskServlet extends HttpServlet {
         String dueLocal    = request.getParameter("dueDate");
         String priorityStr = request.getParameter("priority");
         String status      = request.getParameter("status");
+        String labelIdStr  = request.getParameter("label_id");
 
         if (tidStr == null || pidStr == null || title == null || title.trim().isEmpty()) {
             response.getWriter().println("Missing required fields.");
@@ -206,6 +207,23 @@ public class EditTaskServlet extends HttpServlet {
                     ps.setInt(6, taskId);
                     ps.setInt(7, projectId);
                     ps.executeUpdate();
+                }
+                
+                try (PreparedStatement deleteOld = con.prepareStatement(
+                    "DELETE FROM task_labels WHERE task_id = ?"
+                )) {
+                    deleteOld.setInt(1, taskId);
+                    deleteOld.executeUpdate();
+                }
+                
+                if (labelIdStr != null && !labelIdStr.isEmpty()) {
+                    try (PreparedStatement addLabel = con.prepareStatement(
+                        "INSERT INTO task_labels (task_id, label_id) VALUES (?, ?)"
+                    )) {
+                        addLabel.setInt(1, taskId);
+                        addLabel.setInt(2, Integer.parseInt(labelIdStr));
+                        addLabel.executeUpdate();
+                    }
                 }
 
                 response.sendRedirect("project?id=" + projectId);

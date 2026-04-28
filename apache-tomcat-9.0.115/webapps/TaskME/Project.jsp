@@ -186,6 +186,69 @@
       font-size:0.85rem;
       margin-top:5px;
     }
+    /*label*/
+    .labels-section {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #f0f1f3;
+}
+
+.labels-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.labels-header p {
+  margin: 4px 0 10px;
+  color: #6b7280;
+  font-size: 0.82rem;
+  line-height: 1.3;
+}
+
+.labels-card {
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.labels-card h4 {
+  margin: 0 0 8px;
+  font-size: 0.88rem;
+  font-weight: 800;
+}
+
+.label-form {
+  display: grid;
+  gap: 8px;
+}
+
+.label-input,
+.label-select {
+  width: 100%;
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  background: #fff;
+}
+
+.label-btn {
+  width: 100%;
+  height: 36px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 8px;
+  background: #16a34a;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: inherit;
+}
 
     /* Members list */
     .members-section { margin-top:18px; padding-top:14px; border-top:1px solid #f0f1f3; }
@@ -384,6 +447,53 @@
                     <div class="status">
                       <%= row[4] %> <small>- Due: <%= (row[3] == null ? "N/A" : fmt.format(row[3])) %></small>
                     </div>
+                    
+                    <%
+                      try {
+                          Class.forName("com.mysql.cj.jdbc.Driver");
+                    
+                          java.sql.Connection labelConn = java.sql.DriverManager.getConnection(
+                              "jdbc:mysql://localhost:3306/team14",
+                              "taskme_app",
+                              "taskme123"
+                          );
+                    
+                          java.sql.PreparedStatement labelStmt = labelConn.prepareStatement(
+                              "SELECT l.label_name, l.color " +
+                              "FROM labels l " +
+                              "JOIN task_labels tl ON l.label_id = tl.label_id " +
+                              "WHERE tl.task_id = ?"
+                          );
+                    
+                          labelStmt.setInt(1, tId);
+                    
+                          java.sql.ResultSet labelRs = labelStmt.executeQuery();
+                    %>
+                    
+                    <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap;">
+                      <% while (labelRs.next()) { %>
+                        <span style="
+                          background:<%= labelRs.getString("color") %>;
+                          padding:4px 10px;
+                          border-radius:999px;
+                          font-size:0.75rem;
+                          font-weight:700;
+                        ">
+                          <%= labelRs.getString("label_name") %>
+                        </span>
+                      <% } %>
+                    </div>
+                    
+                    <%
+                          labelRs.close();
+                          labelStmt.close();
+                          labelConn.close();
+                    
+                      } catch (Exception e) {
+                          out.println("Label error: " + e.getMessage());
+                      }
+                    %>
+                    
                     <div class="task-actions">
                       <% if (canModify) { %>
                       <a class="btn-task edit" href="edit-task?taskId=<%= tId %>&projectId=<%= projectId %>">Edit</a>
@@ -426,6 +536,52 @@
                     <div class="status">
                       <%= row[4] %> <small>- Due: <%= (row[3] == null ? "N/A" : fmt.format(row[3])) %></small>
                     </div>
+                    
+                    <%
+                      try {
+                          Class.forName("com.mysql.cj.jdbc.Driver");
+                    
+                          java.sql.Connection labelConn = java.sql.DriverManager.getConnection(
+                              "jdbc:mysql://localhost:3306/team14",
+                              "taskme_app",
+                              "taskme123"
+                          );
+                    
+                          java.sql.PreparedStatement labelStmt = labelConn.prepareStatement(
+                              "SELECT l.label_name, l.color " +
+                              "FROM labels l " +
+                              "JOIN task_labels tl ON l.label_id = tl.label_id " +
+                              "WHERE tl.task_id = ?"
+                          );
+                    
+                          labelStmt.setInt(1, tId);
+                    
+                          java.sql.ResultSet labelRs = labelStmt.executeQuery();
+                    %>
+                    
+                    <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap;">
+                      <% while (labelRs.next()) { %>
+                        <span style="
+                          background:<%= labelRs.getString("color") %>;
+                          padding:4px 10px;
+                          border-radius:999px;
+                          font-size:0.75rem;
+                          font-weight:700;
+                        ">
+                          <%= labelRs.getString("label_name") %>
+                        </span>
+                      <% } %>
+                    </div>
+                    
+                    <%
+                          labelRs.close();
+                          labelStmt.close();
+                          labelConn.close();
+                    
+                      } catch (Exception e) {
+                          out.println("Label error: " + e.getMessage());
+                      }
+                    %>
                     <div class="task-actions">
                       <% if (canModify) { %>
                       <a class="btn-task edit" href="edit-task?taskId=<%= tId %>&projectId=<%= projectId %>">Edit</a>
@@ -468,6 +624,52 @@
                     <div class="status">
                       <%= row[4] %> <small>- Due: <%= (row[3] == null ? "N/A" : fmt.format(row[3])) %></small>
                     </div>
+                    
+                    <%
+                      try {
+                          Class.forName("com.mysql.cj.jdbc.Driver");
+                    
+                          java.sql.Connection labelConn = java.sql.DriverManager.getConnection(
+                              "jdbc:mysql://localhost:3306/team14",
+                              "taskme_app",
+                              "taskme123"
+                          );
+                    
+                          java.sql.PreparedStatement labelStmt = labelConn.prepareStatement(
+                              "SELECT l.label_name, l.color " +
+                              "FROM labels l " +
+                              "JOIN task_labels tl ON l.label_id = tl.label_id " +
+                              "WHERE tl.task_id = ?"
+                          );
+                    
+                          labelStmt.setInt(1, tId);
+                    
+                          java.sql.ResultSet labelRs = labelStmt.executeQuery();
+                    %>
+                    
+                    <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap;">
+                      <% while (labelRs.next()) { %>
+                        <span style="
+                          background:<%= labelRs.getString("color") %>;
+                          padding:4px 10px;
+                          border-radius:999px;
+                          font-size:0.75rem;
+                          font-weight:700;
+                        ">
+                          <%= labelRs.getString("label_name") %>
+                        </span>
+                      <% } %>
+                    </div>
+                    
+                    <%
+                          labelRs.close();
+                          labelStmt.close();
+                          labelConn.close();
+                    
+                      } catch (Exception e) {
+                          out.println("Label error: " + e.getMessage());
+                      }
+                    %>
                     <div class="task-actions">
                       <% if (canModify) { %>
                       <a class="btn-task edit" href="edit-task?taskId=<%= tId %>&projectId=<%= projectId %>">Edit</a>
@@ -522,6 +724,41 @@
         <a class="btn secondary" href="activity-log?projectId=<%= projectId %>" style="margin-top:10px;">
           View Activity Log
         </a>
+
+        <div class="labels-section">
+          <div class="labels-header">
+            <div>
+              <h3>Labels</h3>
+              <p>Create and manage labels for this project</p>
+            </div>
+          </div>
+        
+          <div class="labels-card">
+            <h4>Create New Label</h4>
+        
+            <form action="<%= request.getContextPath() %>/CreateLabelServlet" method="post" class="label-form">
+              <input type="hidden" name="project_id" value="<%= projectId %>">
+        
+              <input 
+                type="text" 
+                name="label_name" 
+                placeholder="Label name" 
+                required
+                class="label-input"
+              >
+        
+              <select name="color" class="label-select">
+                <option value="#ffcccc">Red</option>
+                <option value="#ccffcc">Green</option>
+                <option value="#ccccff">Blue</option>
+                <option value="#ffffcc">Yellow</option>
+                <option value="#e6ccff">Purple</option>
+              </select>
+        
+              <button type="submit" class="label-btn">Add Label</button>
+            </form>
+          </div>
+        </div>
 
         <%-- Admin-only project controls --%>
         <% if (isAdmin) {

@@ -140,6 +140,46 @@
             <input type="datetime-local" name="dueDate" value="<%= dueDateValue %>" />
           </div>
         </div>
+        
+        <div>
+          <label>Label</label>
+          <select name="label_id">
+            <option value="">No label</option>
+        
+            <%
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                java.sql.Connection conn2 = java.sql.DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/team14",
+                    "taskme_app",
+                    "taskme123"
+                );
+        
+                java.sql.PreparedStatement ps2 = conn2.prepareStatement(
+                    "SELECT label_id, label_name FROM labels WHERE project_id = ?"
+                );
+                ps2.setInt(1, projectId);
+        
+                java.sql.ResultSet rs2 = ps2.executeQuery();
+        
+                while (rs2.next()) {
+            %>
+                <option value="<%= rs2.getInt("label_id") %>">
+                    <%= rs2.getString("label_name") %>
+                </option>
+            <%
+                }
+        
+                rs2.close();
+                ps2.close();
+                conn2.close();
+            } catch (Exception e) {
+                out.println("Label dropdown error: " + e.getMessage());
+            }
+            %>
+        
+          </select>
+        </div>
 
         <div class="actions">
           <button class="btn" type="submit">Save Changes</button>
