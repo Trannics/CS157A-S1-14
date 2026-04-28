@@ -351,13 +351,117 @@
       background:#16a34a; color:#fff; font-weight:800;
       font-family:inherit; font-size:0.88rem; cursor:pointer;
     }
+
+    .notif-wrapper {
+  position: relative;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.notif-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.notif-dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 32px;
+  width: 280px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+.notif-dropdown.open {
+  display: block;
+}
+
+.notif-item {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 0.85rem;
+}
+
+.notif-item.unread {
+  font-weight: bold;
+}
+
+.notif-empty {
+  color: gray;
+  font-size: 0.85rem;
+}
+
   </style>
 </head>
 <body>
 
+  <%
+  Integer currentUserId = (Integer) request.getAttribute("currentUserId");
+  %>
+
   <nav>
     <div class="logo">Task<span>ME</span></div>
     <div class="toplinks">
+          <!-- 🔔 NOTIFICATIONS START -->
+    <div class="notif-wrapper">
+      <button type="button" class="notif-btn" onclick="toggleNotifications()">🔔</button>
+
+      <div id="notifDropdown" class="notif-dropdown">
+        <h4>Notifications</h4>
+
+        <%
+          try {
+              Class.forName("com.mysql.cj.jdbc.Driver");
+
+              java.sql.Connection notifConn = java.sql.DriverManager.getConnection(
+                  "jdbc:mysql://localhost:3306/team14",
+                  "taskme_app",
+                  "taskme123"
+              );
+
+              java.sql.PreparedStatement notifStmt = notifConn.prepareStatement(
+              "SELECT Message, Created_At, Is_Read FROM notifications ORDER BY Created_At DESC LIMIT 5"
+              );
+
+              java.sql.ResultSet notifRs = notifStmt.executeQuery();
+
+              boolean hasNotif = false;
+
+              while (notifRs.next()) {
+                  hasNotif = true;
+        %>
+            <div class="notif-item <%= notifRs.getInt("Is_Read") == 0 ? "unread" : "" %>">
+              <div><%= notifRs.getString("Message") %></div>
+              <small><%= notifRs.getTimestamp("Created_At") %></small>
+            </div>
+        <%
+              }
+
+              if (!hasNotif) {
+        %>
+            <div class="notif-empty">No notifications</div>
+        <%
+              }
+
+              notifRs.close();
+              notifStmt.close();
+              notifConn.close();
+
+          } catch (Exception e) {
+              out.println("Notification error");
+          }
+        %>
+
+      </div>
+    </div>
+    <!-- 🔔 NOTIFICATIONS END -->
       <a href="dashboard">Home</a>
       <a href="account">Account</a>
       <a href="logout">Logout</a>
@@ -375,7 +479,7 @@
       java.sql.Timestamp createdAt = (java.sql.Timestamp) request.getAttribute("createdAt");
       String role          = (String)  request.getAttribute("role");
       List<?> tasks        = (List<?>)  request.getAttribute("tasks");
-      Integer currentUserId = (Integer) request.getAttribute("currentUserId");
+
 
       boolean isAdmin  = "ADMIN".equals(role);
       boolean isMember = "MEMBER".equals(role);
@@ -1025,6 +1129,14 @@
       const tid = "<%= commentTaskId != null ? commentTaskId : "" %>";
       if (tid) openModal(parseInt(tid, 10));
     })();
+
+    function toggleNotifications() {
+  const dropdown = document.getElementById("notifDropdown");
+  if (dropdown) {
+    dropdown.classList.toggle("open");
+  }
+}
+
   </script>
 </body>
 </html>
