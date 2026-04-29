@@ -92,11 +92,9 @@
       <% } else { %>
         <table>
           <tr>
-            <th>Log ID</th>
+            <th>#</th>
             <th>User</th>
-            <th>Action</th>
-            <th>Entity Type</th>
-            <th>Entity ID</th>
+            <th>Description</th>
             <th>Time</th>
           </tr>
 
@@ -108,9 +106,7 @@
               <td><%= row[0] %></td>
               <td><%= row[1] %></td>
               <td><%= row[2] %></td>
-              <td><%= row[3] %></td>
-              <td><%= row[4] %></td>
-              <td><%= fmt.format(row[5]) %></td>
+              <td><%= fmt.format(row[3]) %></td>
             </tr>
           <%
             }

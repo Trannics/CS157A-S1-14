@@ -60,6 +60,18 @@ public class DeleteTaskServlet extends HttpServlet {
                     return;
                 }
 
+                // Records title before deletion for the notification message
+                String taskTitle = "Task #" + taskId;
+                try (PreparedStatement ps = con.prepareStatement(
+                    "SELECT Task_Title FROM tasks WHERE Task_ID=? AND Project_ID=?"
+                )) {
+                    ps.setInt(1, taskId);
+                    ps.setInt(2, projectId);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (rs.next()) taskTitle = rs.getString("Task_Title");
+                    }
+                }
+
                 // Delete task (FK cascade handles assignments, comments, etc.)
                 try (PreparedStatement ps = con.prepareStatement(
                     "DELETE FROM tasks WHERE Task_ID=? AND Project_ID=?"
@@ -67,6 +79,29 @@ public class DeleteTaskServlet extends HttpServlet {
                     ps.setInt(1, taskId);
                     ps.setInt(2, projectId);
                     ps.executeUpdate();
+                }
+
+                try (PreparedStatement logPs = con.prepareStatement(
+                    "INSERT INTO activity_log (Project_ID, User_ID, Action_Type, Entity_Type, Entity_ID) VALUES (?, ?, ?, ?, ?)"
+                )) {
+                    logPs.setInt(1, projectId);
+                    logPs.setInt(2, userId);
+                    logPs.setString(3, "DELETE");
+                    logPs.setString(4, "Task");
+                    logPs.setInt(5, taskId);
+                    logPs.executeUpdate();
+                }
+
+                // Notify all other project members
+                try (PreparedStatement notifPs = con.prepareStatement(
+                    "INSERT INTO notifications (User_ID, Message, Triggering_Entity_Type, Triggering_Entity_ID) " +
+                    "SELECT pm.User_ID, ?, 'Task', ? FROM project_memberships pm WHERE pm.Project_ID=? AND pm.User_ID!=?"
+                )) {
+                    notifPs.setString(1, "Task deleted: " + taskTitle);
+                    notifPs.setInt(2, taskId);
+                    notifPs.setInt(3, projectId);
+                    notifPs.setInt(4, userId);
+                    notifPs.executeUpdate();
                 }
 
                 response.sendRedirect("project?id=" + projectId);

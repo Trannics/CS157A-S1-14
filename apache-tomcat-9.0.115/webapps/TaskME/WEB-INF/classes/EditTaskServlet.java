@@ -227,11 +227,12 @@ public class EditTaskServlet extends HttpServlet {
                     filePart.write(filePath);
 
                     try (PreparedStatement psAttach = con.prepareStatement(
-                        "INSERT INTO attachments (task_id, file_name, file_path) VALUES (?, ?, ?)"
+                        "INSERT INTO attachments (task_id, file_name, file_path, uploaded_by) VALUES (?, ?, ?, ?)"
                     )) {
                         psAttach.setInt(1, taskId);
                         psAttach.setString(2, fileName);
                         psAttach.setString(3, "uploads/" + fileName);
+                        psAttach.setInt(4, userId);
                         psAttach.executeUpdate();
                     }
                 }
@@ -242,7 +243,7 @@ public class EditTaskServlet extends HttpServlet {
                     deleteOld.setInt(1, taskId);
                     deleteOld.executeUpdate();
                 }
-                
+
                 if (labelIdStr != null && !labelIdStr.isEmpty()) {
                     try (PreparedStatement addLabel = con.prepareStatement(
                         "INSERT INTO task_labels (task_id, label_id) VALUES (?, ?)"
@@ -251,6 +252,29 @@ public class EditTaskServlet extends HttpServlet {
                         addLabel.setInt(2, Integer.parseInt(labelIdStr));
                         addLabel.executeUpdate();
                     }
+                }
+
+                try (PreparedStatement logPs = con.prepareStatement(
+                    "INSERT INTO activity_log (Project_ID, User_ID, Action_Type, Entity_Type, Entity_ID) VALUES (?, ?, ?, ?, ?)"
+                )) {
+                    logPs.setInt(1, projectId);
+                    logPs.setInt(2, userId);
+                    logPs.setString(3, "UPDATE");
+                    logPs.setString(4, "Task");
+                    logPs.setInt(5, taskId);
+                    logPs.executeUpdate();
+                }
+
+                // Notify all other project members
+                try (PreparedStatement notifPs = con.prepareStatement(
+                    "INSERT INTO notifications (User_ID, Message, Triggering_Entity_Type, Triggering_Entity_ID) " +
+                    "SELECT pm.User_ID, ?, 'Task', ? FROM project_memberships pm WHERE pm.Project_ID=? AND pm.User_ID!=?"
+                )) {
+                    notifPs.setString(1, "Task updated: " + title.trim());
+                    notifPs.setInt(2, taskId);
+                    notifPs.setInt(3, projectId);
+                    notifPs.setInt(4, userId);
+                    notifPs.executeUpdate();
                 }
 
                 response.sendRedirect("project?id=" + projectId);

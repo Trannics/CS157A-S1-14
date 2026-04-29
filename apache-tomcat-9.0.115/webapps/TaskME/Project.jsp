@@ -398,12 +398,41 @@
   font-size: 0.85rem;
 }
 
+.notif-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #dc2626;
+  color: #fff;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  margin-left: 2px;
+  vertical-align: top;
+}
+
   </style>
 </head>
 <body>
 
   <%
   Integer currentUserId = (Integer) request.getAttribute("currentUserId");
+  int notifUserId = (Integer) session.getAttribute("userId");
+  int unreadCount = 0;
+  try {
+      Class.forName("com.mysql.cj.jdbc.Driver");
+      try (java.sql.Connection uc = java.sql.DriverManager.getConnection(
+              "jdbc:mysql://localhost:3306/team14", "taskme_app", "taskme123");
+           java.sql.PreparedStatement up = uc.prepareStatement(
+              "SELECT COUNT(*) FROM notifications WHERE User_ID=? AND Is_Read=0")) {
+          up.setInt(1, notifUserId);
+          java.sql.ResultSet ur = up.executeQuery();
+          if (ur.next()) unreadCount = ur.getInt(1);
+      }
+  } catch (Exception ignored) {}
   %>
 
   <nav>
@@ -411,7 +440,9 @@
     <div class="toplinks">
           <!-- 🔔 NOTIFICATIONS START -->
     <div class="notif-wrapper">
-      <button type="button" class="notif-btn" onclick="toggleNotifications()">🔔</button>
+      <button type="button" class="notif-btn" onclick="toggleNotifications()">
+        🔔<% if (unreadCount > 0) { %><span class="notif-badge" id="notifBadge"><%= unreadCount %></span><% } %>
+      </button>
 
       <div id="notifDropdown" class="notif-dropdown">
         <h4>Notifications</h4>
@@ -427,8 +458,9 @@
               );
 
               java.sql.PreparedStatement notifStmt = notifConn.prepareStatement(
-              "SELECT Message, Created_At, Is_Read FROM notifications ORDER BY Created_At DESC LIMIT 5"
+              "SELECT Message, Created_At, Is_Read FROM notifications WHERE User_ID=? ORDER BY Created_At DESC LIMIT 10"
               );
+              notifStmt.setInt(1, notifUserId);
 
               java.sql.ResultSet notifRs = notifStmt.executeQuery();
 
@@ -943,9 +975,11 @@
           <a class="btn" href="create-task?projectId=<%= projectId %>">Create Task</a>
         <% } %>
         
-        <a class="btn secondary" href="activity-log?projectId=<%= projectId %>" style="margin-top:10px;">
-          View Activity Log
-        </a>
+        <% if ("ADMIN".equals(request.getAttribute("role"))) { %>
+          <a class="btn secondary" href="activity-log?projectId=<%= projectId %>" style="margin-top:10px;">
+            View Activity Log
+          </a>
+        <% } %>
 
         <div class="labels-section">
           <div class="labels-header">
@@ -1131,11 +1165,17 @@
     })();
 
     function toggleNotifications() {
-  const dropdown = document.getElementById("notifDropdown");
-  if (dropdown) {
-    dropdown.classList.toggle("open");
-  }
-}
+      const dropdown = document.getElementById("notifDropdown");
+      if (!dropdown) return;
+      const isOpen = dropdown.classList.toggle("open");
+      if (isOpen) {
+        fetch('notifications', { method: 'POST' }).then(() => {
+          document.querySelectorAll('.notif-item.unread').forEach(el => el.classList.remove('unread'));
+          const badge = document.getElementById('notifBadge');
+          if (badge) badge.remove();
+        });
+      }
+    }
 
   </script>
 </body>

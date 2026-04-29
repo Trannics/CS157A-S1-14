@@ -179,4 +179,15 @@
     <url-pattern>/AssignLabelServlet</url-pattern>
 </servlet-mapping>
 
+
+<servlet>
+    <servlet-name>notifications</servlet-name>
+    <servlet-class>NotificationServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>notifications</servlet-name>
+    <url-pattern>/notifications</url-pattern>
+</servlet-mapping>
+
 </web-app>

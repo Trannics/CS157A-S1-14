@@ -16,7 +16,7 @@ public class AssignLabelServlet extends HttpServlet {
             Connection conn = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/team14",
                 "taskme_app",
-                "YOUR_PASSWORD"
+                "taskme123"
             );
 
             String sql = "INSERT IGNORE INTO task_labels (task_id, label_id) VALUES (?, ?)";
@@ -29,7 +29,7 @@ public class AssignLabelServlet extends HttpServlet {
             stmt.close();
             conn.close();
 
-            response.sendRedirect("Project.jsp?project_id=" + projectId);
+            response.sendRedirect("project?id=" + projectId);
 
         } catch (Exception e) {
             e.printStackTrace();

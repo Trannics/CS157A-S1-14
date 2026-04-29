@@ -75,6 +75,17 @@ public class RemoveMemberServlet extends HttpServlet {
                     ps.executeUpdate();
                 }
 
+                try (PreparedStatement logPs = con.prepareStatement(
+                    "INSERT INTO activity_log (Project_ID, User_ID, Action_Type, Entity_Type, Entity_ID) VALUES (?, ?, ?, ?, ?)"
+                )) {
+                    logPs.setInt(1, projectId);
+                    logPs.setInt(2, requesterId);
+                    logPs.setString(3, "REMOVE_MEMBER");
+                    logPs.setString(4, "User");
+                    logPs.setInt(5, targetUserId);
+                    logPs.executeUpdate();
+                }
+
                 response.sendRedirect("project?id=" + projectId);
             }
 

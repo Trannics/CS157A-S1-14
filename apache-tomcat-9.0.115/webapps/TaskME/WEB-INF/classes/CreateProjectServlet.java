@@ -93,6 +93,17 @@ public class CreateProjectServlet extends HttpServlet {
                     ps.executeUpdate();
                 }
 
+                try (PreparedStatement logPs = con.prepareStatement(
+                    "INSERT INTO activity_log (Project_ID, User_ID, Action_Type, Entity_Type, Entity_ID) VALUES (?, ?, ?, ?, ?)"
+                )) {
+                    logPs.setInt(1, newProjectId);
+                    logPs.setInt(2, userId);
+                    logPs.setString(3, "CREATE");
+                    logPs.setString(4, "Project");
+                    logPs.setInt(5, newProjectId);
+                    logPs.executeUpdate();
+                }
+
                 // Go back to create-project page with invite section active
                 response.sendRedirect("create-project?projectId=" + newProjectId);
             }

@@ -194,9 +194,21 @@ public class CreateTaskServlet extends HttpServlet {
                     logPs.setString(3, "CREATE");
                     logPs.setString(4, "Task");
                     logPs.setInt(5, taskId);
-                    
+
                     logPs.executeUpdate();
                     logPs.close();
+
+                    // Notify all other project members
+                    try (PreparedStatement notifPs = con.prepareStatement(
+                        "INSERT INTO notifications (User_ID, Message, Triggering_Entity_Type, Triggering_Entity_ID) " +
+                        "SELECT pm.User_ID, ?, 'Task', ? FROM project_memberships pm WHERE pm.Project_ID=? AND pm.User_ID!=?"
+                    )) {
+                        notifPs.setString(1, "New task created: " + title.trim());
+                        notifPs.setInt(2, taskId);
+                        notifPs.setInt(3, projectId);
+                        notifPs.setInt(4, userId);
+                        notifPs.executeUpdate();
+                    }
                 }
 
                 // Back to project page

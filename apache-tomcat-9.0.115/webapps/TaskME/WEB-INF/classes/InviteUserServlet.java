@@ -123,6 +123,40 @@ public class InviteUserServlet extends HttpServlet {
                     ps.executeUpdate();
                 }
 
+                // Fetch project name for the notification message
+                String projectName = null;
+                try (PreparedStatement ps = con.prepareStatement(
+                    "SELECT Project_Name FROM projects WHERE Project_ID=?"
+                )) {
+                    ps.setInt(1, projectId);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (rs.next()) projectName = rs.getString("Project_Name");
+                    }
+                }
+
+                // Notify the invitee
+                String notifMsg = "You were added to " + projectName + " as " + role + ".";
+                try (PreparedStatement ps = con.prepareStatement(
+                    "INSERT INTO notifications (User_ID, Message, Triggering_Entity_Type, Triggering_Entity_ID) VALUES (?, ?, ?, ?)"
+                )) {
+                    ps.setInt(1, inviteeId);
+                    ps.setString(2, notifMsg);
+                    ps.setString(3, "Project");
+                    ps.setInt(4, projectId);
+                    ps.executeUpdate();
+                }
+
+                try (PreparedStatement logPs = con.prepareStatement(
+                    "INSERT INTO activity_log (Project_ID, User_ID, Action_Type, Entity_Type, Entity_ID) VALUES (?, ?, ?, ?, ?)"
+                )) {
+                    logPs.setInt(1, projectId);
+                    logPs.setInt(2, inviterId);
+                    logPs.setString(3, "ADD_MEMBER");
+                    logPs.setString(4, "User");
+                    logPs.setInt(5, inviteeId);
+                    logPs.executeUpdate();
+                }
+
                 response.sendRedirect("project?id=" + projectId);
             }
 
