@@ -597,8 +597,8 @@
                           java.sql.PreparedStatement labelStmt = labelConn.prepareStatement(
                               "SELECT l.label_name, l.color " +
                               "FROM labels l " +
-                              "JOIN task_labels tl ON l.label_id = tl.label_id " +
-                              "WHERE tl.task_id = ?"
+                              "JOIN tasks t ON t.label_id = l.label_id " +
+                              "WHERE t.Task_ID = ?"
                           );
                     
                           labelStmt.setInt(1, tId);
@@ -725,8 +725,8 @@
                           java.sql.PreparedStatement labelStmt = labelConn.prepareStatement(
                               "SELECT l.label_name, l.color " +
                               "FROM labels l " +
-                              "JOIN task_labels tl ON l.label_id = tl.label_id " +
-                              "WHERE tl.task_id = ?"
+                              "JOIN tasks t ON t.label_id = l.label_id " +
+                              "WHERE t.Task_ID = ?"
                           );
                     
                           labelStmt.setInt(1, tId);
@@ -852,8 +852,8 @@
                           java.sql.PreparedStatement labelStmt = labelConn.prepareStatement(
                               "SELECT l.label_name, l.color " +
                               "FROM labels l " +
-                              "JOIN task_labels tl ON l.label_id = tl.label_id " +
-                              "WHERE tl.task_id = ?"
+                              "JOIN tasks t ON t.label_id = l.label_id " +
+                              "WHERE t.Task_ID = ?"
                           );
                     
                           labelStmt.setInt(1, tId);

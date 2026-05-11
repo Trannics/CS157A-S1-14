@@ -71,19 +71,22 @@ public class EditTaskServlet extends HttpServlet {
                 Timestamp dueDate = null;
                 int priority = 2;
 
+                Integer currentLabelId = null;
                 try (PreparedStatement ps = con.prepareStatement(
-                    "SELECT Task_Title, Task_Description, Due_Date, Status, Priority " +
+                    "SELECT Task_Title, Task_Description, Due_Date, Status, Priority, label_id " +
                     "FROM tasks WHERE Task_ID=? AND Project_ID=?"
                 )) {
                     ps.setInt(1, taskId);
                     ps.setInt(2, projectId);
                     try (ResultSet rs = ps.executeQuery()) {
                         if (rs.next()) {
-                            taskTitle = rs.getString("Task_Title");
-                            taskDesc  = rs.getString("Task_Description");
-                            dueDate   = rs.getTimestamp("Due_Date");
-                            status    = rs.getString("Status");
-                            priority  = rs.getInt("Priority");
+                            taskTitle     = rs.getString("Task_Title");
+                            taskDesc      = rs.getString("Task_Description");
+                            dueDate       = rs.getTimestamp("Due_Date");
+                            status        = rs.getString("Status");
+                            priority      = rs.getInt("Priority");
+                            int lid       = rs.getInt("label_id");
+                            if (!rs.wasNull()) currentLabelId = lid;
                         }
                     }
                 }
@@ -104,14 +107,15 @@ public class EditTaskServlet extends HttpServlet {
                     }
                 }
 
-                request.setAttribute("taskId",      taskId);
-                request.setAttribute("projectId",   projectId);
-                request.setAttribute("projectName", projectName);
-                request.setAttribute("role",        role);
-                request.setAttribute("taskTitle",   taskTitle);
-                request.setAttribute("taskDesc",    taskDesc);
-                request.setAttribute("dueDate",     dueDate);
-                request.setAttribute("status",      status);
+                request.setAttribute("taskId",        taskId);
+                request.setAttribute("projectId",     projectId);
+                request.setAttribute("projectName",   projectName);
+                request.setAttribute("role",          role);
+                request.setAttribute("taskTitle",     taskTitle);
+                request.setAttribute("taskDesc",      taskDesc);
+                request.setAttribute("dueDate",       dueDate);
+                request.setAttribute("status",        status);
+                request.setAttribute("currentLabelId", currentLabelId);
                 request.setAttribute("priority",    priority);
 
                 request.getRequestDispatcher("EditTask.jsp").forward(request, response);
@@ -237,21 +241,17 @@ public class EditTaskServlet extends HttpServlet {
                     }
                 }
                 
-                try (PreparedStatement deleteOld = con.prepareStatement(
-                    "DELETE FROM task_labels WHERE task_id = ?"
+                try (PreparedStatement ps = con.prepareStatement(
+                    "UPDATE tasks SET label_id=? WHERE Task_ID=? AND Project_ID=?"
                 )) {
-                    deleteOld.setInt(1, taskId);
-                    deleteOld.executeUpdate();
-                }
-
-                if (labelIdStr != null && !labelIdStr.isEmpty()) {
-                    try (PreparedStatement addLabel = con.prepareStatement(
-                        "INSERT INTO task_labels (task_id, label_id) VALUES (?, ?)"
-                    )) {
-                        addLabel.setInt(1, taskId);
-                        addLabel.setInt(2, Integer.parseInt(labelIdStr));
-                        addLabel.executeUpdate();
+                    if (labelIdStr != null && !labelIdStr.isEmpty()) {
+                        ps.setInt(1, Integer.parseInt(labelIdStr));
+                    } else {
+                        ps.setNull(1, Types.INTEGER);
                     }
+                    ps.setInt(2, taskId);
+                    ps.setInt(3, projectId);
+                    ps.executeUpdate();
                 }
 
                 try (PreparedStatement logPs = con.prepareStatement(

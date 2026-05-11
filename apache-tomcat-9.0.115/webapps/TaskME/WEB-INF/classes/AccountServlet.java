@@ -110,22 +110,23 @@ public class AccountServlet extends HttpServlet {
             Class.forName("com.mysql.cj.jdbc.Driver");
             try (Connection con = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS)) {
 
-                // Verify current password
-                boolean correct = false;
+                // Fetch stored hash
+                String storedHash = null;
                 try (PreparedStatement ps = con.prepareStatement(
-                    "SELECT 1 FROM users WHERE User_ID=? AND Password_Hash=?"
+                    "SELECT Password_Hash FROM users WHERE User_ID=?"
                 )) {
                     ps.setInt(1, userId);
-                    ps.setString(2, currentPassword);
-                    try (ResultSet rs = ps.executeQuery()) { correct = rs.next(); }
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (rs.next()) storedHash = rs.getString("Password_Hash");
+                    }
                 }
 
-                if (!correct) {
+                if (!PasswordUtil.verify(currentPassword, storedHash)) {
                     response.sendRedirect("account?error=wrong_password");
                     return;
                 }
 
-                if (newPassword.equals(currentPassword)) {
+                if (PasswordUtil.verify(newPassword, storedHash)) {
                     response.sendRedirect("account?error=same_password");
                     return;
                 }
@@ -133,7 +134,7 @@ public class AccountServlet extends HttpServlet {
                 try (PreparedStatement ps = con.prepareStatement(
                     "UPDATE users SET Password_Hash=? WHERE User_ID=?"
                 )) {
-                    ps.setString(1, newPassword);
+                    ps.setString(1, PasswordUtil.hash(newPassword));
                     ps.setInt(2, userId);
                     ps.executeUpdate();
                 }

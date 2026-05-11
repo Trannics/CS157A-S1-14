@@ -13,28 +13,25 @@ public class SignUpServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
 
-        String first = request.getParameter("firstname");
-        String last  = request.getParameter("lastname");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password"); // demo
+        String first    = request.getParameter("firstname");
+        String last     = request.getParameter("lastname");
+        String email    = request.getParameter("email");
+        String password = request.getParameter("password");
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
             try (Connection con = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS)) {
 
-                PreparedStatement ps = con.prepareStatement(
-                    "INSERT INTO users (First_Name, Last_Name, Email, Password_Hash) " +
-                    "VALUES (?, ?, ?, ?)"
-                );
-
-                ps.setString(1, first);
-                ps.setString(2, last);
-                ps.setString(3, email);
-                ps.setString(4, password);
-
-                ps.executeUpdate();
-                ps.close();
+                try (PreparedStatement ps = con.prepareStatement(
+                    "INSERT INTO users (First_Name, Last_Name, Email, Password_Hash) VALUES (?, ?, ?, ?)"
+                )) {
+                    ps.setString(1, first);
+                    ps.setString(2, last);
+                    ps.setString(3, email);
+                    ps.setString(4, PasswordUtil.hash(password));
+                    ps.executeUpdate();
+                }
 
                 response.sendRedirect("Log-In-Page.html");
             }
