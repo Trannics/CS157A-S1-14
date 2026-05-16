@@ -82,6 +82,10 @@
 <servlet>
   <servlet-name>editTask</servlet-name>
   <servlet-class>EditTaskServlet</servlet-class>
+  <multipart-config>
+    <max-file-size>10485760</max-file-size>
+    <max-request-size>10485760</max-request-size>
+  </multipart-config>
 </servlet>
 
 <servlet-mapping>
